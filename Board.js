@@ -63,16 +63,18 @@ class Board {
     set src(value) {
         this._src = value;
     }
-    drawBoard(ctx){
+
+    drawBoard(ctx) {
         let image = new Image();
         image.src = this._src;
         // image.onload = () => {
-            ctx.drawImage(image, this._x, this._y, this._width, this._height);
+        ctx.drawImage(image, this._x, this._y, this._width, this._height);
         // }
     }
-    runBoard(ctx){
+
+    runBoard(ctx) {
         this._y += this._speed;
-        if (this._y >= 0){
+        if (this._y >= 0) {
             this._y = -500;
         }
         this.drawBoard(ctx);

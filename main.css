@@ -1,0 +1,29 @@
+#restartGame {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 600px;
+    top: 400px;
+    left: 720px;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: rgba(143, 52, 218, 0.95);
+    font-size: 20px;
+}
+#startGame {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 600px;
+    top: 450px;
+    left: 720px;
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: rgba(143, 52, 218, 0.95);
+    font-size: 20px;
+}
+canvas {
+    background-image: url("Assets/Img/Road.png");
+}

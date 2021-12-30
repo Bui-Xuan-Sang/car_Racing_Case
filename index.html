@@ -5,22 +5,21 @@
     <title>Car Racing</title>
     <script src="car.js"></script>
     <script src="Board.js"></script>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body style="background-image: url(./Assets/Img/background.jpg)">
-<table style="margin-left: auto;margin-right: auto">
-    <tr>
-        <td>
-            <canvas id="myCanvas" width="500" height="735"
-                    style="border: solid 1px">
-            </canvas>
-        </td>
-        <td>
-            <button onclick="location.reload()" style="width: 100px;height: 50px;margin-bottom: 692px; background-color: rgba(96,255,91,0.97)">Play Again
-            </button>
-        </td>
-    </tr>
 
-</table>
+<canvas id="myCanvas" width="500" height="735"
+        style="border: solid 1px;display: block; margin-left: auto;margin-right: auto">
+</canvas>
+<button id="restartGame" class="btn" style="display: none"
+        onclick="restartGame()">Restart
+</button>
+<button id="startGame" class="btn"
+        onclick="startGame()">Start
+</button>
+
+
 <script>
     const CAR1WIGHT = 40;
     const CAR1HEIGHT = 80;
@@ -135,6 +134,7 @@
             car1.x + car1.width > car2.x &&
             car1.y < car2.y + car2.height &&
             car1.height + car1.y > car2.y) {
+            document.getElementById('restartGame').style.display = 'block';
             return true;
         }
         return false;
@@ -180,10 +180,24 @@
         updateCanvas();
     }
 
-    intervalId = requestAnimationFrame(runCar);
-
 
     document.addEventListener('keydown', moveCar);
+
+    function restartGame() {
+        car1 = new Car(200, 600, CAR1WIGHT, CAR1HEIGHT, 30, 'Assets/Img/Car_1.png');
+        myBoard = new Board(0, 0, 500, 1500, 50, 'Assets/Img/Road.png');
+        policeCars = [];
+        document.getElementById('restartGame').style.display = 'none';
+        runCar();
+    }
+    function startGame() {
+        car1 = new Car(200, 600, CAR1WIGHT, CAR1HEIGHT, 30, 'Assets/Img/Car_1.png');
+        myBoard = new Board(0, 0, 500, 1500, 50, 'Assets/Img/Road.png');
+        policeCars = [];
+        document.getElementById('startGame').style.display = 'none';
+        intervalId = requestAnimationFrame(runCar);
+    }
+
 
 </script>
 </body>

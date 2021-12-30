@@ -84,21 +84,13 @@ class Car {
         image.src = this._src;
         //image.onload = () => {
 
-            ctx.drawImage(image, this._x, this._y, this._width, this._height);
+        ctx.drawImage(image, this._x, this._y, this._width, this._height);
         //}
     }
 
     upSpeed() {
         this._speed *= 2;
     }
-    drawCoin(ctx){
-        let image = new Image();
-        image.src = this._src;
-        //image.onload = () => {
-            ctx.drawImage(image, this._x, this._y, this._width, this._height);
-        //}
-    }
-
 
 
 }
