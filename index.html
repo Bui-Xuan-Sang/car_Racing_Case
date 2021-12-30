@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Racing</title>
+    <script src="car.js"></script>
+    <script src="Board.js"></script>
+</head>
+<body style="background-image: url(./Assets/Img/background.jpg)">
+<table style="margin-left: auto;margin-right: auto">
+    <tr>
+        <td>
+            <canvas id="myCanvas" width="500" height="735"
+                    style="border: solid 1px">
+            </canvas>
+        </td>
+        <td>
+            <button onclick="location.reload()" style="width: 100px;height: 50px;margin-bottom: 692px; background-color: rgba(96,255,91,0.97)">Play Again
+            </button>
+        </td>
+    </tr>
+
+</table>
+<script>
+    const CAR1WIGHT = 40;
+    const CAR1HEIGHT = 80;
+    const CAR2WIGHT = 40;
+    const CAR2HEIGHT = 80;
+    let score = 0;
+    // let isCheck
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext('2d');
+    let car1 = new Car(200, 600, CAR1WIGHT, CAR1HEIGHT, 30, 'Assets/Img/Car_1.png');
+    let myBoard = new Board(0, 0, 500, 1500, 50, 'Assets/Img/Road.png');
+    let policeCars = [];
+    let intervalId = -1;
+    myBoard.drawBoard(ctx);
+    car1.drawCar(ctx);
+
+
+    function moveCar(event) {
+        switch (event.which) {
+            case 37: {
+                if (car1.x < 85) {
+                    return;
+                }
+                car1.moveLeft();
+                break;
+            }
+            case 39: {
+                if (car1.x + car1.width > canvas.clientWidth - 100) {
+                    return;
+                }
+                car1.moveRight();
+                break;
+            }
+            case 38: {
+                if (car1.y < 0) {
+                    return;
+                }
+                car1.moveUp();
+                break;
+            }
+            case 40: {
+                if (car1.y + car1.height > canvas.clientHeight) {
+                    return;
+                }
+                car1.moveDown();
+                break;
+            }
+            case 32: {
+                car1.upSpeed();
+                break;
+            }
+        }
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, 500, 735);
+    }
+
+
+    let carIMGs = ['Assets/Img/Car_2.png', 'Assets/Img/Car_3.png']
+
+    function newPoliceCar() {
+        let index = Math.floor(Math.random() * carIMGs.length);
+        let police = new Car((Math.floor(Math.random() * 300) + 100), canvas.clientWidth - 730, CAR2WIGHT, CAR2HEIGHT, 10, carIMGs[index]);
+        policeCars.push(police);
+    }
+
+    setInterval(newPoliceCar, 500);
+    setInterval(function () {
+        myBoard._speed++;
+    }, 10000)
+
+
+    function updateCanvas() {
+        clearCanvas();
+        myBoard.runBoard(ctx);
+        car1.drawCar(ctx);
+        drawPolice();
+        let gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        gradient.addColorStop("0", "white");
+        gradient.addColorStop("0.5", "blue");
+        gradient.addColorStop("1.0", "red");
+        ctx.font = "30px Arial";
+        ctx.fillStyle = gradient;
+        ctx.fillText("Score: " + score, 90, 50, 150);
+
+    }
+
+    function drawPolice() {
+        for (let i = 0; i < policeCars.length; i++) {
+            policeCars[i].drawCar(ctx);
+            policeCars[i].moveDown();
+            if (policeCars[i].y > 1000) {
+                policeCars.splice(i, 1);
+                score += 1;
+            }
+
+        }
+    }
+
+    function stop() {
+        let image = new Image();
+        image.src = "./Assets/Img/GameOver.png";
+        image.onload = function () {
+            ctx.drawImage(image, 102, 150, 300, 300);
+        }
+    }
+
+
+    function isCollise(car1, car2) {
+        if (car1.x < car2.x + car2.width &&
+            car1.x + car1.width > car2.x &&
+            car1.y < car2.y + car2.height &&
+            car1.height + car1.y > car2.y) {
+            return true;
+        }
+        return false;
+        // let car1X = [0, CAR1WIGHT / 2, CAR1WIGHT, CAR1WIGHT, CAR1WIGHT, CAR1WIGHT / 2, 0, 0]
+        // let car1Y = [0, 0, 0, CAR1HEIGHT / 2, CAR1HEIGHT, CAR1HEIGHT, CAR1HEIGHT, CAR1HEIGHT / 2]
+        // let car2X = [0, CAR2WIGHT / 2, CAR2WIGHT, CAR2WIGHT, CAR2WIGHT, CAR2WIGHT / 2, 0, 0]
+        // let car2Y = [0, 0, 0, CAR2HEIGHT / 2, CAR2HEIGHT, CAR2HEIGHT, CAR2HEIGHT, CAR2HEIGHT / 2]
+        // isCheck = false
+        // for (let i = 0; i < car1X.length; i++) {
+        //     for (let j = 0; j < car2X.length; j++) {
+        //         let Xcar1 = car1._x + car1X[i]
+        //         let Ycar1 = car1._y + car1Y[i]
+        //         let Xcar2 = car2._x + car2X[j]
+        //         let Ycar2 = car2._y + car2Y[j]
+        //         let distance = Math.sqrt(Math.pow((Xcar2 - Xcar1), 2) + Math.pow((Ycar2 - Ycar1), 2))
+        //         if (distance < 5) {
+        //             isCheck = true;
+        //
+        //         }
+        //
+        //     }
+        //
+        // }
+        // if (isCheck == true) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+
+    }
+
+
+    function runCar() {
+        intervalId = requestAnimationFrame(runCar);
+        for (let i = 0; i < policeCars.length; i++) {
+            if (isCollise(car1, policeCars[i])) {
+                cancelAnimationFrame(intervalId);
+            }
+            stop();
+        }
+
+
+        updateCanvas();
+    }
+
+    intervalId = requestAnimationFrame(runCar);
+
+
+    document.addEventListener('keydown', moveCar);
+
+</script>
+</body>
+</html>
