@@ -128,6 +128,14 @@
         }
     }
 
+    function startBackground() {
+        let image = new Image();
+        image.src = "./Assets/Img/start.png";
+        image.onload = function () {
+            ctx.drawImage(image, 90, 150, 300, 300);
+        }
+    }
+
 
     function isCollise(car1, car2) {
         if (car1.x < car2.x + car2.width &&
@@ -190,6 +198,7 @@
         document.getElementById('restartGame').style.display = 'none';
         runCar();
     }
+    startBackground();
     function startGame() {
         car1 = new Car(200, 600, CAR1WIGHT, CAR1HEIGHT, 30, 'Assets/Img/Car_1.png');
         myBoard = new Board(0, 0, 500, 1500, 50, 'Assets/Img/Road.png');

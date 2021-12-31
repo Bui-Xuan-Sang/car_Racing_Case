@@ -17,7 +17,7 @@
     margin-right: auto;
     margin-bottom: 600px;
     top: 450px;
-    left: 720px;
+    left: 710px;
     width: 100px;
     height: 40px;
     border-radius: 5px;
@@ -25,5 +25,5 @@
     font-size: 20px;
 }
 canvas {
-    background-image: url("Assets/Img/Road.png");
+    background-image: url("Assets/Img/Road7.png");
 }
